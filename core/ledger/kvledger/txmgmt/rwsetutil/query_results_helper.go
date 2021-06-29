@@ -18,7 +18,7 @@ import (
 type MerkleTreeLevel uint32
 
 // Hash represents bytes of a hash
-type Hash []byte
+type Hash = []byte
 
 const (
 	leafLevel = MerkleTreeLevel(1)
@@ -233,7 +233,7 @@ func (m *merkleTree) getSummery() *kvrwset.QueryReadsMerkleSummary {
 	return &kvrwset.QueryReadsMerkleSummary{
 		MaxDegree:      m.maxDegree,
 		MaxLevel:       uint32(m.getMaxLevel()),
-		MaxLevelHashes: hashesToBytes(m.getMaxLevelHashes()),
+		MaxLevelHashes: m.getMaxLevelHashes(),
 	}
 }
 
@@ -259,12 +259,4 @@ func computeCombinedHash(hashes []Hash, hashFunc HashFunc) (Hash, error) {
 		combinedHash = append(combinedHash, h...)
 	}
 	return hashFunc(combinedHash)
-}
-
-func hashesToBytes(hashes []Hash) [][]byte {
-	b := [][]byte{}
-	for _, hash := range hashes {
-		b = append(b, hash)
-	}
-	return b
 }
